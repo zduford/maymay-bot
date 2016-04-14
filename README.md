@@ -5,16 +5,22 @@ maymay-bot is an implementation of the [Discord API](https://discordapp.com/deve
 maymay-bot is used to spam terrible sound bytes cause i'm garbo.
 
 ### Running the Bot
-First First get the bot: `go get github.com/zduford/maymay-bot`
+First *get* the bot: `go get github.com/zduford/maymay-bot`
 
-First install the bot: `go install github.com/zduford/maymay-bot`, then run the following command:
+As well as getting the bot, you'll also need to get the other resources used to make this bot:
+
+`go get github.com/Sirupsen/logrus`
+`go get github.com/bwmarrin/discordgo`
+`go get github.com/layeh/gopus`
+
+As well as installing ffmpeg on your machine.
+
+
+Then *install* the bot: `go install github.com/zduford/maymay-bot/cmd/bot`, make sure your audio folder is in the same direrctory as your executable, then run the following command:
 
 ```
 ./bot -t "MY_BOT_ACCOUNT_TOKEN" -o OWNER_ID
 ```
-
-To build of course get yerslef into the cmd/bot/ dir and do that whole `go install` jazz.
-
 
 ## Thanks
 Thanks to hammerandchisel for making the airhornbot [hammerandchisel](https://github.com/hammerandchisel). <3

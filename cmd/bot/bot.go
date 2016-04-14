@@ -1,3 +1,11 @@
+/*
+ ************************ MAYMAY-BOT ************************
+ ************************ By zduford ************************
+ *********** http://github.com/zduford/maymay-bot ***********
+ *********** Based on hammerandchisel's airhornbot **********
+ ************************** ENJOY ***************************
+ */
+
 package main
 
 import (
