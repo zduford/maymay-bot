@@ -180,6 +180,17 @@ Sounds: []*Sound{
 },
 }
 
+var YOUDIP *SoundCollection = &SoundCollection{
+Prefix: "dip",
+Commands: []string{
+    "!youdip",
+    "!dip",
+},
+Sounds: []*Sound{
+    createSound("classic", 10, 250),
+},
+}
+
 var COLLECTIONS []*SoundCollection = []*SoundCollection{
     DAMN,
     DEEZNUTZ,
@@ -189,6 +200,7 @@ var COLLECTIONS []*SoundCollection = []*SoundCollection{
     WOW,
     TRIPLE,
     ILLKILLYOU,
+    YOUDIP,
 }
 
 // Create a Sound struct
@@ -499,6 +511,15 @@ func handleBotControlMessages(s *discordgo.Session, m *discordgo.MessageCreate, 
     return
 }
 
+func generateCommandList() string{
+    var commands string
+    commands = "`Here's some of those dank sounds you meme loving fuck \n\n"
+    commands = commands + "!damn\n!deez\n!hitmarker\n!mmmsay\n!scream\n!wow\n!triple\n!illkillyou\n"
+    commands = commands + "!dip\n\n"
+    commands = commands + "Now go out there and make me proud you autists.`"
+    return commands
+}
+
 func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
     if len(m.Content) <= 0 || (m.Content[0] != '!' && len(m.Mentions) != 1) {
         return
@@ -541,12 +562,36 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
     // If !commands is sent
     if parts[0] == "!commands" {
         var commands string
-        commands = "`Here's some of those dank sounds you meme loving fuck \n\n"
-        commands = commands + "!damn\n!deez\n!hitmarker\n!mmmsay\n!scream\n!wow\n!triple\n\n"
-        commands = commands + "Now go out there and make me proud you autists.`"
+        commands = generateCommandList()
         s.ChannelMessageSend(channel.ID, commands)
         return
     }
+    
+    if parts[0] == "!roll" {
+        if len(parts) == 1 {
+            var num = randomRange(1, 20)
+            s.ChannelMessageSend(channel.ID, "```Rolling d20```")
+            time.Sleep(time.Millisecond * 100)
+            s.ChannelMessageSend(channel.ID, fmt.Sprintf("```%v```", num))
+            return
+        }else{
+            var splitD = strings.Split(parts[1], "d")
+            if(splitD[0] != ""){
+                s.ChannelMessageSend(channel.ID, "```Invalid entry, try 'd20' or 'd6'```")
+                return
+            }
+            var max int
+            max,_ = strconv.Atoi(splitD[1])
+            var num = randomRange(1, max + 1)
+            s.ChannelMessageSend(channel.ID, fmt.Sprintf("```Rolling d%v```", max))
+            time.Sleep(time.Millisecond * 100)
+            s.ChannelMessageSend(channel.ID, fmt.Sprintf("```%v```", num))
+            return
+        }
+        
+    }
+    
+    
     
     // Find the collection for the command we got
     for _, coll := range COLLECTIONS {
