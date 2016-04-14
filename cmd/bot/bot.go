@@ -16,15 +16,12 @@ import (
         log "github.com/Sirupsen/logrus"
         "github.com/bwmarrin/discordgo"
         "github.com/layeh/gopus"
-        redis "gopkg.in/redis.v3"
         )
 
 var (
      // discordgo session
      discord *discordgo.Session
      
-     // Redis client connection (used for stats)
-     rcli *redis.Client
      
      // Map of Guild id's to *Play channels, used for queuing and rate-limiting guilds
      queues map[string]chan *Play = make(map[string]chan *Play)
@@ -365,39 +362,6 @@ func enqueuePlay(user *discordgo.User, guild *discordgo.Guild, coll *SoundCollec
     }
 }
 
-func trackSoundStats(play *Play) {
-    if rcli == nil {
-        return
-    }
-    
-    _, err := rcli.Pipelined(func(pipe *redis.Pipeline) error {
-                             var baseChar string
-                             
-                             if play.Forced {
-                             baseChar = "f"
-                             } else {
-                             baseChar = "a"
-                             }
-                             
-                             base := fmt.Sprintf("airhorn:%s", baseChar)
-                             pipe.Incr("airhorn:total")
-                             pipe.Incr(fmt.Sprintf("%s:total", base))
-                             pipe.Incr(fmt.Sprintf("%s:sound:%s", base, play.Sound.Name))
-                             pipe.Incr(fmt.Sprintf("%s:user:%s:sound:%s", base, play.UserID, play.Sound.Name))
-                             pipe.Incr(fmt.Sprintf("%s:guild:%s:sound:%s", base, play.GuildID, play.Sound.Name))
-                             pipe.Incr(fmt.Sprintf("%s:guild:%s:chan:%s:sound:%s", base, play.GuildID, play.ChannelID, play.Sound.Name))
-                             pipe.SAdd(fmt.Sprintf("%s:users", base), play.UserID)
-                             pipe.SAdd(fmt.Sprintf("%s:guilds", base), play.GuildID)
-                             pipe.SAdd(fmt.Sprintf("%s:channels", base), play.ChannelID)
-                             return nil
-                             })
-    
-    if err != nil {
-        log.WithFields(log.Fields{
-                       "error": err,
-                       }).Warning("Failed to track stats in redis")
-    }
-}
 
 // Play a sound
 func playSound(play *Play, vc *discordgo.VoiceConnection) (err error) {
@@ -423,8 +387,6 @@ func playSound(play *Play, vc *discordgo.VoiceConnection) (err error) {
         time.Sleep(time.Millisecond * 125)
     }
     
-    // Track stats for this play in redis
-    go trackSoundStats(play)
     
     // Sleep for a specified amount of time before playing the sound
     time.Sleep(time.Millisecond * 32)
@@ -482,39 +444,11 @@ func scontains(key string, options ...string) bool {
     return false
 }
 
-func calculateAirhornsPerSecond(cid string) {
-    current, _ := strconv.Atoi(rcli.Get("airhorn:a:total").Val())
-    time.Sleep(time.Second * 10)
-    latest, _ := strconv.Atoi(rcli.Get("airhorn:a:total").Val())
-    
-    discord.ChannelMessageSend(cid, fmt.Sprintf("Current APS: %v", (float64(latest-current))/10.0))
-}
 
 // Handles bot operator messages, should be refactored (lmao)
 func handleBotControlMessages(s *discordgo.Session, m *discordgo.MessageCreate, parts []string, g *discordgo.Guild) {
     ourShard := shardContains(g.ID)
-    if scontains(parts[len(parts)-1], "stats") && ourShard {
-        users := 0
-        for _, guild := range s.State.Ready.Guilds {
-            users += len(guild.Members)
-        }
-        
-        s.ChannelMessageSend(m.ChannelID, fmt.Sprintf(
-                                                      "I'm in %v servers with %v users.",
-                                                      len(s.State.Ready.Guilds),
-                                                      users))
-    } else if scontains(parts[len(parts)-1], "status") {
-        guilds := 0
-        for _, guild := range s.State.Ready.Guilds {
-            if shardContains(guild.ID) {
-                guilds += 1
-            }
-        }
-        s.ChannelMessageSend(m.ChannelID, fmt.Sprintf(
-                                                      "Shard %v contains %v servers",
-                                                      strings.Join(SHARDS, ","),
-                                                      guilds))
-    } else if len(parts) >= 3 && scontains(parts[len(parts)-2], "die") {
+    if len(parts) >= 3 && scontains(parts[len(parts)-2], "die") {
         shard := parts[len(parts)-1]
         if len(SHARDS) == 0 || scontains(shard, SHARDS...) {
             log.Info("Got DIE request, exiting...")
@@ -523,7 +457,6 @@ func handleBotControlMessages(s *discordgo.Session, m *discordgo.MessageCreate, 
         }
     } else if scontains(parts[len(parts)-1], "aps") && ourShard {
         s.ChannelMessageSend(m.ChannelID, ":ok_hand: give me a sec m8")
-        go calculateAirhornsPerSecond(m.ChannelID)
     } else if scontains(parts[len(parts)-1], "where") && ourShard {
         s.ChannelMessageSend(m.ChannelID,
                              fmt.Sprintf("its a me, shard %v", string(g.ID[len(g.ID)-5])))
@@ -603,7 +536,6 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 func main() {
     var (
          Token = flag.String("t", "", "Discord Authentication Token")
-         Redis = flag.String("r", "", "Redis Connection String")
          Shard = flag.String("s", "", "Integers to shard by")
          Owner = flag.String("o", "", "Owner ID")
          err   error
@@ -635,19 +567,6 @@ func main() {
         coll.Load()
     }
     
-    // If we got passed a redis server, try to connect
-    if *Redis != "" {
-        log.Info("Connecting to redis...")
-        rcli = redis.NewClient(&redis.Options{Addr: *Redis, DB: 0})
-        _, err = rcli.Ping().Result()
-        
-        if err != nil {
-            log.WithFields(log.Fields{
-                           "error": err,
-                           }).Fatal("Failed to connect to redis")
-            return
-        }
-    }
     
     // Create a discord session
     log.Info("Starting discord session...")
