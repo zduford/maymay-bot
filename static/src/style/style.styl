@@ -1,0 +1,117 @@
+@require 'cloud';
+@require 'island';
+@require 'tool-tip';
+@require 'footer';
+@require 'stats-panel';
+@require 'stats-crossfade';
+
+html, body, #app {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: roboto;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+#app {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+}
+
+.content {
+  margin-top: -80px;
+  z-index: 1;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  transition: margin-top 0.5s ease;
+
+  .shadow {
+    background-color: rgba(255, 255, 255, .8);
+    box-shadow: 0 0 50px 25px rgba(255, 255, 255, .8);
+    text-align: center;
+
+    .title {
+      color: color-dark-gray;
+      font-size: 64px;
+      line-height: 68px;
+      margin: 0;
+    }
+
+    .message {
+      margin-top: 0px;
+      color: color-brown;
+      font-size: 15px;
+      line-height: 24px;
+      opacity: 0.6;
+
+      a {
+        color: color-brown;
+      }
+    }
+  }
+}
+
+#parallax {
+  position: absolute;
+  display: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.add-btn {
+  background: white;
+  border: 2px dashed color-brown;
+  border-radius: 30px;
+  width: 240px;
+  height: 50px;
+  text-align: center;
+  font-size: 18px;
+  color: color-orange;
+  line-height: 50px;
+  text-transform: uppercase;
+  transition: all 100ms ease-in-out;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+
+  &:hover {
+    color: white;
+    background-color: color-brown;
+    border: 2px solid color-brown;
+  }
+}
+
+.video-airhorn {
+  padding: 10px;
+  width: 681px;
+  max-width: 90%;
+  outline: none;
+  cursor: pointer;
+  height: 248px;
+}
+
+.firefox {
+  .add-btn {
+    border-style: solid;
+  }
+}
+
+@require 'responsive';

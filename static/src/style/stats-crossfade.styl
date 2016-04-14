@@ -1,0 +1,101 @@
+offset = 255px;
+duration = 400ms;
+fast-duration = 200ms;
+
+.crossfade {
+  animation-duration: duration;
+  animation-timing-function: cubic-bezier(0.5, -0.25, 0.3, 1.25);
+  animation-fill-mode: forwards;
+
+  &.one {
+    animation-duration: fast-duration;
+    animation-name: crossfade-one;
+  }
+
+  &.two {
+    animation-name: crossfade-two;
+    animation-delay: delay;
+  }
+
+  &.one-reverse {
+    animation-duration: fast-duration;
+    animation-name: crossfade-one-reverse;
+  }
+
+  &.two-reverse {
+    animation-name: crossfade-two-reverse;
+    animation-delay: delay;
+  }
+
+  &.three {
+    animation-name: crossfade-three;
+  }
+
+  &.three-reverse {
+    animation-name: crossfade-three-reverse;
+  }
+}
+
+@keyframes crossfade-one {
+  from {
+    transform: translate3d(0px, offset, 0px);
+    visibility: hidden;
+  }
+  to {
+    transform: translate3d(0px, 0px, 0px);
+    visibility: visible;
+  }
+}
+
+@keyframes crossfade-two {
+  from {
+    transform: translate3d(0px, 0px, 0px);
+    opacity: 1;
+  }
+  to {
+    transform: translate3d(0px, - offset, 0px);
+    opacity: 0;
+  }
+}
+
+@keyframes crossfade-one-reverse {
+  from {
+    transform: translate3d(0px, 0px, 0px);
+    visibility: visible;
+  }
+  to {
+    transform: translate3d(0px, offset, 0px);
+    visibility: hidden;
+  }
+}
+
+@keyframes crossfade-two-reverse {
+  from {
+    transform: translate3d(0px, - offset, 0px);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0px, 0px, 0px);
+    opacity: 1;
+  }
+}
+
+@keyframes crossfade-three {
+  from {
+    transform: translate3d(0px, 0px, 0px);
+  }
+
+  to {
+    transform: translate3d(0px, - offset, 0px);
+  }
+}
+
+@keyframes crossfade-three-reverse {
+  from {
+    transform: translate3d(0px, - offset, 0px);
+  }
+
+  to {
+    transform: translate3d(0px, 0px, 0px);
+  }
+}

@@ -1,0 +1,172 @@
+.island {
+  position: absolute;
+  z-index: -1;
+  transition: left 0.5s ease, top 0.5s ease, opacity 0.1s ease, visibility 0.1s ease;
+
+  &.pond {
+    left: -444px;
+    top: -145px;
+  }
+
+  &.tree {
+    left: -300px;
+    top: 291px;
+  }
+
+  &.trees {
+    left: 876px;
+    top: -193px;
+  }
+
+  &.tent {
+    left: 672px;
+    top: 337px;
+  }
+
+  &.double-tree {
+    left: -1070px;
+    top: 61px;
+  }
+
+  &.forest {
+    left: 270px;
+    top: -639px;
+
+  }
+
+  &.forest-1 {
+    left: -750px;
+    top: 611px;
+  }
+  &.log {
+    left: 1494px;
+    top: -389px;
+  }
+
+  &.shrooms {
+    left: 1280px;
+    top: 591px;
+  }
+
+  &.shrooms-1 {
+    left: -720px;
+    top: -678px;
+  }
+
+  &.small-island {
+    z-index: -2;
+    height: 82px;
+    width: 102px;
+  }
+
+  // Center
+  &.small-0 {
+    left: 1132px;
+    top: -545px;
+  }
+
+  &.small-1 {
+    left: -80px;
+    top: -563px;
+  }
+
+  &.small-2 {
+    left: 36px;
+    top: 431px;
+  }
+
+  &.small-3 {
+    left: 390px;
+    top: 676px;
+  }
+
+  &.small-4 {
+    left: 640px;
+    top: -339px;
+  }
+
+  // Left side
+  &.small-5 {
+    left: -800px;
+    top: 331px;
+  }
+
+  &.small-6 {
+    left: -576px;
+    top: 11px;
+  }
+
+  &.small-7 {
+    left: -880px;
+    top: -241px;
+  }
+
+  // Right side
+  &.small-8 {
+    left: 1400px;
+    top: 491px;
+  }
+
+  &.small-9 {
+    left: 1000px;
+    top: 211px;
+  }
+
+  &.small-10 {
+    left: 1570px;
+    top: 41px;
+  }
+
+  &.small-11 {
+    left: 1390px;
+    top: -469px;
+  }
+}
+
+.paused {
+  animation-play-state: paused;
+}
+
+.island, .leaves, .lines, .stretch, .small-island {
+  animation-duration: 1500ms;
+  animation-name: float;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
+  overflow: visible;
+}
+
+.leaves {
+  animation-delay: 340ms;
+}
+
+.lines {
+  animation-delay: 100ms;
+}
+
+.stretch {
+  animation-name: stretch;
+  animation-delay: 140ms;
+}
+
+.small-island {
+  animation-duration: 2000ms;
+}
+
+@keyframes stretch {
+  from {
+    transform: translate3d(0px, 0px, 0px);
+  }
+  to {
+    transform: translate3d(0px, 2px, 0px);
+  }
+}
+
+@keyframes float {
+  from {
+    transform: translate3d(0px, 4px, 0px);
+  }
+  to {
+     transform: translate3d(0px, -4px, 0px);
+  }
+}

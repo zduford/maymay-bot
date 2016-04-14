@@ -1,0 +1,58 @@
+@require('variables');
+
+.stats-panel {
+  position: fixed;
+  left: 20px;
+  padding-left: 8px;
+  padding-right: 75px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: white;
+  opacity: .98;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  border-radius: 3px;
+  z-index: 1;
+
+  .icon-close {
+    cursor: pointer;
+    position: absolute;
+    top: -16px;
+    right: -16px;
+  }
+
+  .stats-row {
+    display: flex;
+    margin-bottom: 5px;
+
+    .label-value {
+      margin-left: 8px;
+
+      .value {
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 19px;
+        color: color-brown;
+      }
+
+      .label {
+        font-weight: bold;
+        font-size: 10px;
+        line-height: 12px;
+        color: color-lightest-gray;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+.firefox {
+  .stats-panel {
+    left: 14px;
+  }
+}
+
+.safari {
+  .stats-panel {
+    left: 4px;
+  }
+}

@@ -1,0 +1,97 @@
+@require 'variables';
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  opacity: 0.98;
+  padding: 18px 20px;
+  font-size: 18px;
+  line-height: 24px;
+  box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, .1);
+  z-index: 2;
+
+  .airhorn-count {
+    display: flex;
+
+    .stats-toggler {
+      display: flex;
+      cursor: pointer;
+
+      .airhorn-count-content {
+        align-items: center;
+        display: flex;
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 500;
+        width: 170px;
+
+        .count-text {
+          margin-left: 10px;
+
+          .count {
+            display: flex;
+            justify-content: center;
+            color: color-medium-gray;
+            transition: all 0.2s ease;
+
+            &.count-big {
+              font-size: 18px;
+            }
+          }
+
+          .and-counting {
+            color: color-lightest-gray;
+          }
+        }
+      }
+
+      .stats-btn {
+        align-self: center;
+        margin-left: 28px;
+        z-index: 3;
+
+        img:nth-child(2) {
+          position: relative;
+          left: -29px;
+          top: 1px;
+        }
+      }
+    }
+  }
+
+  .main-text, a {
+    text-align: center;
+    color: color-brown;
+    align-self: center;
+    max-width: calc(100% - 550px);
+
+    .normal-text {
+      opacity: 0.6;
+    }
+
+    .arrow {
+      text-decoration: none;
+    }
+  }
+
+  .social {
+    display: flex;
+    justify-content: flex-end;
+    align-self: center;
+    width: 228px;
+
+    img {
+      cursor: pointer;
+      padding-left: 10px;
+
+      &:hover {
+        opacity: .9;
+      }
+    }
+  }
+}
