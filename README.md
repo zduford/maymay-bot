@@ -9,13 +9,11 @@ First First get the bot: `go get github.com/zduford/maymay-bot`
 First install the bot: `go install github.com/zduford/maymay-bot`, then run the following command:
 
 ```
-./bot -r "localhost:6379" -t "MY_BOT_ACCOUNT_TOKEN" -o OWNER_ID
+./bot -t "MY_BOT_ACCOUNT_TOKEN" -o OWNER_ID
 ```
 
 To build of course get yerslef into the cmd/bot/ dir and do that whole `go install` jazz.
 
-
-Note, I've still yet to remove all the redis references, so you'll still need a redis-server up to use this (for now, sorry ._.).
 
 ## Thanks
 Thanks to hammerandchisel for making the airhornbot [hammerandchisel](https://github.com/hammerandchisel). <3
