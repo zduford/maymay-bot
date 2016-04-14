@@ -576,7 +576,8 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
             return
         }else{
             var splitD = strings.Split(parts[1], "d")
-            if(splitD[0] != ""){
+            var entry = strings.ToLower(splitD[1])
+            if(splitD[0] != "" || strings.ContainsAny(entry,"a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|y|x|y|z")){
                 s.ChannelMessageSend(channel.ID, "```Invalid entry, try 'd20' or 'd6'```")
                 return
             }
