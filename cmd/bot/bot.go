@@ -106,7 +106,7 @@ Commands: []string{
     "!hitmarker",
 },
 Sounds: []*Sound{
-    createSound("classic", 1000, 250),
+    createSound("classic", 200, 250),
 },
 }
 
@@ -138,7 +138,7 @@ Commands: []string{
     "!wow",
 },
 Sounds: []*Sound{
-    createSound("classic", 1000, 250),
+    createSound("classic", 100, 250),
 },
 }
 
@@ -149,7 +149,7 @@ Commands: []string{
     "!triple",
 },
 Sounds: []*Sound{
-    createSound("classic", 1000, 250),
+    createSound("classic", 10, 250),
 },
 }
 
@@ -389,7 +389,7 @@ func playSound(play *Play, vc *discordgo.VoiceConnection) (err error) {
     
     
     // Sleep for a specified amount of time before playing the sound
-    time.Sleep(time.Millisecond * 32)
+    //time.Sleep(time.Millisecond * 32)
     
     // Play the sound
     play.Sound.Play(vc)
@@ -505,7 +505,11 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
     
     // If !commands is sent
     if parts[0] == "!commands" {
-        s.ChannelMessageSend(channel.ID, "`To Do AKA fUCK yOU`")
+        var commands string
+        commands = "`Here's some of those dank sounds you meme loving fuck \n\n"
+        commands = commands + "!damn\n!deez\n!hitmarker\n!mmmsay\n!scream\n!wow\n!triple\n\n"
+        commands = commands + "Now go out there and make me proud you autists.`"
+        s.ChannelMessageSend(channel.ID, commands)
         return
     }
     
