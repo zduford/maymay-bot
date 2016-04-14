@@ -10,17 +10,21 @@ First *get* the bot: `go get github.com/zduford/maymay-bot`
 As well as getting the bot, you'll also need to get the other resources used to make this bot:
 
 `go get github.com/Sirupsen/logrus`
+
 `go get github.com/bwmarrin/discordgo`
+
 `go get github.com/layeh/gopus`
 
 As well as installing ffmpeg on your machine.
 
 
-Then *install* the bot: `go install github.com/zduford/maymay-bot/cmd/bot`, make sure your audio folder is in the same direrctory as your executable, then run the following command:
+Then *install* the bot: `go install github.com/zduford/maymay-bot/cmd/bot`, once installed, make sure your audio folder is in the same direrctory as your executable, then run the following command:
 
 ```
 ./bot -t "MY_BOT_ACCOUNT_TOKEN" -o OWNER_ID
 ```
+
+And that should be it!
 
 ## Thanks
 Thanks to hammerandchisel for making the airhornbot [hammerandchisel](https://github.com/hammerandchisel). <3
