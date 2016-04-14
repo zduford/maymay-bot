@@ -37,7 +37,7 @@ var (
      SHARDS []string = make([]string, 0)
      )
 
-// Play represents an individual use of the !airhorn command
+// Play represents an individual use of the meme sounds commands
 type Play struct {
     GuildID   string
     ChannelID string
@@ -47,7 +47,7 @@ type Play struct {
     // The next play to occur after this, only used for chaining sounds like anotha
     Next *Play
     
-    // If true, this was a forced play using a specific airhorn sound name
+    // If true, this was a forced play using a specific meme sound name
     Forced bool
 }
 
@@ -91,7 +91,6 @@ Sounds: []*Sound{
 
 var DEEZNUTZ *SoundCollection = &SoundCollection{
 Prefix:    "deezNuts",
-    //ChainWith: AIRHORN,
 Commands: []string{
     "!deez",
     "!deezNutz",
@@ -126,6 +125,7 @@ var SCREAM *SoundCollection = &SoundCollection{
 Prefix: "scream",
 Commands: []string{
     "!wilhelm",
+    "!scream",
 },
 Sounds: []*Sound{
     createSound("classic", 1000, 250),
@@ -477,7 +477,7 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
                        "channel": m.ChannelID,
                        "message": m.ID,
                        }).Warning("Failed to grab channel")
-        //return
+        return
     }
     
     guild, _ := discord.State.Guild(channel.GuildID)
