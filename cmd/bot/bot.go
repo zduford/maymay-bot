@@ -20,6 +20,7 @@ import (
         "strconv"
         "strings"
         "time"
+        "runtime"
         
         log "github.com/Sirupsen/logrus"
         "github.com/bwmarrin/discordgo"
@@ -41,8 +42,15 @@ var (
      // Owner
      OWNER string
      
+     //Version
+     VERSION_RELEASE = "0.0.2-b"
+     
      // Shard (or -1)
      SHARDS []string = make([]string, 0)
+     
+     mem runtime.MemStats
+     
+     
      )
 
 // Play represents an individual use of the meme sounds commands
@@ -101,7 +109,7 @@ var DEEZNUTZ *SoundCollection = &SoundCollection{
 Prefix:    "deezNuts",
 Commands: []string{
     "!deez",
-    "!deezNutz",
+    "!deeznutz",
 },
 Sounds: []*Sound{
     createSound("classic", 1000, 250),
@@ -161,6 +169,17 @@ Sounds: []*Sound{
 },
 }
 
+var ILLKILLYOU *SoundCollection = &SoundCollection{
+Prefix: "kill",
+Commands: []string{
+    "!illkillyou",
+    "!killyou",
+},
+Sounds: []*Sound{
+    createSound("classic", 10, 250),
+},
+}
+
 var COLLECTIONS []*SoundCollection = []*SoundCollection{
     DAMN,
     DEEZNUTZ,
@@ -169,6 +188,7 @@ var COLLECTIONS []*SoundCollection = []*SoundCollection{
     SCREAM,
     WOW,
     TRIPLE,
+    ILLKILLYOU,
 }
 
 // Create a Sound struct
@@ -427,6 +447,7 @@ func onReady(s *discordgo.Session, event *discordgo.Ready) {
 }
 
 func onGuildCreate(s *discordgo.Session, event *discordgo.GuildCreate) {
+    
     if !shardContains(event.Guild.ID) {
         return
     }
@@ -463,11 +484,17 @@ func handleBotControlMessages(s *discordgo.Session, m *discordgo.MessageCreate, 
             s.ChannelMessageSend(m.ChannelID, ":ok_hand: goodbye cruel world")
             os.Exit(0)
         }
-    } else if scontains(parts[len(parts)-1], "aps") && ourShard {
-        s.ChannelMessageSend(m.ChannelID, ":ok_hand: give me a sec m8")
+    } else if scontains(parts[len(parts)-1], "info") && ourShard {
+        runtime.ReadMemStats(&mem)
+        s.ChannelMessageSend(m.ChannelID,
+                             fmt.Sprintf("```info\nGoLang Ver.: %v\nmaymay-bot ver.: %v\nMem: %v / %v\nTIME UP: TODO\nCALLS: TODO\nGUILDS: TODO```",
+                                         runtime.Version(), VERSION_RELEASE, mem.Alloc, mem.TotalAlloc))
     } else if scontains(parts[len(parts)-1], "where") && ourShard {
         s.ChannelMessageSend(m.ChannelID,
                              fmt.Sprintf("its a me, shard %v", string(g.ID[len(g.ID)-5])))
+    }else if scontains(parts[len(parts)-1], "killbot") && ourShard {
+        s.ChannelMessageSend(m.ChannelID,":ok_hand: goodbye cruel world")
+        os.Exit(0)
     }
     return
 }
