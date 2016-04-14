@@ -6,6 +6,7 @@ maymay-bot is used to spam terrible sound bytes cause i'm garbo.
 
 ### Running the Bot
 First First get the bot: `go get github.com/zduford/maymay-bot`
+
 First install the bot: `go install github.com/zduford/maymay-bot`, then run the following command:
 
 ```
