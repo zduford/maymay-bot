@@ -1,25 +1,21 @@
-# Airhorn Bot
-Airhorn is an example implementation of the [Discord API](https://discordapp.com/developers/docs/intro). Airhorn bot utilizes the [discordgo](https://github.com/bwmarrin/discordgo) library, a free and open source library. Airhorn Bot requires Go 1.4 or higher.
+# maymay-bot
+maymay-bot is an implementation of the [Discord API](https://discordapp.com/developers/docs/intro). maymay-bot utilizes the [discordgo](https://github.com/bwmarrin/discordgo) library, a free and open source library. maymay-bot requires Go 1.4 or higher.
 
 ## Usage
-Airhorn Bot has two components, a bot client that handles the playing of loyal airhorns, and a web server that implements OAuth2 and stats. Once added to your server, airhorn bot can be summoned by running `!airhorn`.
-
+maymay-bot is used to spam terrible sound bytes cause i'm garbo.
 
 ### Running the Bot
-First install the bot: `go install github.com/hammerandchisel/airhornbot`, then run the following command:
+First First get the bot: `go get github.com/zduford/maymay-bot`
+First install the bot: `go install github.com/zduford/maymay-bot`, then run the following command:
 
 ```
-./airhornbot -r "localhost:6379" -t "MY_BOT_ACCOUNT_TOKEN" -o OWNER_ID
+./bot -r "localhost:6379" -t "MY_BOT_ACCOUNT_TOKEN" -o OWNER_ID
 ```
 
-### Running the Web Server
-First install the webserver: `go install github.com/hammerandchisel/airhornbot`, then run `make static`, finally run:
+To build of course get yerslef into the cmd/bot/ dir and do that whole `go install` jazz.
 
-```
-./airhornweb -r "localhost:6379" -i MY_APPLICATION_ID -s 'MY_APPLICATION_SECRET"
-```
 
-Note, the webserver requires a redis instance to track statistics
+Note, I've still yet to remove all the redis references, so you'll still need a redis-server up to use this (for now, sorry ._.).
 
 ## Thanks
-Thanks to the awesome (one might describe them as smart... loyal... appreciative...) [iopred](https://github.com/iopred) and [bwmarrin](https://github.com/bwmarrin/discordgo) for helping code review the initial release.
+Thanks to hammerandchisel for making the airhornbot [hammerandchisel](https://github.com/hammerandchisel). <3
