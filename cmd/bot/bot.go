@@ -21,6 +21,7 @@ import (
         "strings"
         "time"
         "runtime"
+        "regexp"
         
         log "github.com/Sirupsen/logrus"
         "github.com/bwmarrin/discordgo"
@@ -515,7 +516,7 @@ func generateCommandList() string{
     var commands string
     commands = "`Here's some of those dank sounds you meme loving fuck \n\n"
     commands = commands + "!damn\n!deez\n!hitmarker\n!mmmsay\n!scream\n!wow\n!triple\n!illkillyou\n"
-    commands = commands + "!dip\n\n"
+    commands = commands + "!dip\n!roll\n\n"
     commands = commands + "Now go out there and make me proud you autists.`"
     return commands
 }
@@ -568,6 +569,7 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
     }
     
     if parts[0] == "!roll" {
+        re := regexp.MustCompile("^[0-9]*$")
         if len(parts) == 1 {
             var num = randomRange(1, 20)
             s.ChannelMessageSend(channel.ID, "```Rolling d20```")
@@ -575,18 +577,39 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
             s.ChannelMessageSend(channel.ID, fmt.Sprintf("```%v```", num))
             return
         }else{
+            var amt int = 1
             var splitD = strings.Split(parts[1], "d")
-            var entry = strings.ToLower(splitD[1])
-            if(splitD[0] != "" || strings.ContainsAny(entry,"a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|y|x|y|z")){
+            //if a command like 2d6
+            if (re.MatchString(splitD[0])){//checking if [1] is a num
+                amt,_ = strconv.Atoi(splitD[0])
+                if amt > 5{
+                    s.ChannelMessageSend(channel.ID, "```Whoa there buddy, only 5 at a time```")
+                    return
+                }
+            }
+
+            if re.MatchString(splitD[1]){//if [1] is not a num
+            }else{
+                s.ChannelMessageSend(channel.ID, "```Invalid entry, try 'd20' or 'd6'```")
+                return
+            }
+            
+            if splitD[1] == ""{
                 s.ChannelMessageSend(channel.ID, "```Invalid entry, try 'd20' or 'd6'```")
                 return
             }
             var max int
             max,_ = strconv.Atoi(splitD[1])
-            var num = randomRange(1, max + 1)
-            s.ChannelMessageSend(channel.ID, fmt.Sprintf("```Rolling d%v```", max))
-            time.Sleep(time.Millisecond * 100)
-            s.ChannelMessageSend(channel.ID, fmt.Sprintf("```%v```", num))
+            var num int
+            if amt == 0 {
+                amt++
+            }
+            for i:=0; i < amt; i++ {
+                num = randomRange(1, max + 1)
+                s.ChannelMessageSend(channel.ID, fmt.Sprintf("```Rolling d%v```", max))
+                time.Sleep(time.Millisecond * 50)
+                s.ChannelMessageSend(channel.ID, fmt.Sprintf("```%v```", num))
+            }
             return
         }
         
