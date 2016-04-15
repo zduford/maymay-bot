@@ -44,7 +44,12 @@ var (
      OWNER string
      
      //Version
-     VERSION_RELEASE = "0.0.2-b"
+     VERSION_RELEASE = "0.0.2"
+     
+     //TIME Constant
+     t0 = time.Now()
+     
+     COUNT int = 0
      
      // Shard (or -1)
      SHARDS []string = make([]string, 0)
@@ -499,9 +504,14 @@ func handleBotControlMessages(s *discordgo.Session, m *discordgo.MessageCreate, 
         }
     } else if scontains(parts[len(parts)-1], "info") && ourShard {
         runtime.ReadMemStats(&mem)
+        t1 := time.Now()
+        d := t1.Sub(t0)
+        minutesPassed := d.Minutes()
+        var truncate int = int(minutesPassed) % 60
+        hoursPassed := truncate / 60
         s.ChannelMessageSend(m.ChannelID,
-                             fmt.Sprintf("```info\nGoLang Ver.: %v\nmaymay-bot ver.: %v\nMem: %v / %v\nTIME UP: TODO\nCALLS: TODO\nGUILDS: TODO```",
-                                         runtime.Version(), VERSION_RELEASE, mem.Alloc, mem.TotalAlloc))
+                             fmt.Sprintf("```info\nGoLang Ver.: %v\nmaymay-bot ver.: %v\nMem: %v / %v\nTime Up: %v hrs. %v min.\nCalls: %v```",
+                                         runtime.Version(), VERSION_RELEASE, mem.Alloc, mem.TotalAlloc, hoursPassed, truncate, COUNT))
     } else if scontains(parts[len(parts)-1], "where") && ourShard {
         s.ChannelMessageSend(m.ChannelID,
                              fmt.Sprintf("its a me, shard %v", string(g.ID[len(g.ID)-5])))
@@ -562,6 +572,7 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
     
     // If !commands is sent
     if parts[0] == "!commands" {
+        COUNT++
         var commands string
         commands = generateCommandList()
         s.ChannelMessageSend(channel.ID, commands)
@@ -569,6 +580,7 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
     }
     
     if parts[0] == "!roll" {
+        COUNT++
         re := regexp.MustCompile("^[0-9]*$")
         if len(parts) == 1 {
             var num = randomRange(1, 20)
@@ -639,7 +651,7 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
                     return
                 }
             }
-            
+            COUNT++
             go enqueuePlay(m.Author, guild, coll, sound)
             return
         }
@@ -654,7 +666,6 @@ func main() {
          err   error
          )
     flag.Parse()
-    
     if *Owner != "" {
         OWNER = *Owner
     }
