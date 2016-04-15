@@ -508,7 +508,7 @@ func handleBotControlMessages(s *discordgo.Session, m *discordgo.MessageCreate, 
         d := t1.Sub(t0)
         minutesPassed := d.Minutes()
         var truncate int = int(minutesPassed) % 60
-        hoursPassed := truncate / 60
+        var hoursPassed int = int(minutesPassed / 60)
         s.ChannelMessageSend(m.ChannelID,
                              fmt.Sprintf("```info\nGoLang Ver.: %v\nmaymay-bot ver.: %v\nMem: %v / %v\nTime Up: %v hrs. %v min.\nCalls: %v```",
                                          runtime.Version(), VERSION_RELEASE, mem.Alloc, mem.TotalAlloc, hoursPassed, truncate, COUNT))
