@@ -582,14 +582,14 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
             //if a command like 2d6
             if (re.MatchString(splitD[0])){//checking if [1] is a num
                 amt,_ = strconv.Atoi(splitD[0])
-                if amt > 5{
+                if amt > 5 && m.Author.ID != OWNER{//Allows the owner to be a spammy jerk
                     s.ChannelMessageSend(channel.ID, "```Whoa there buddy, only 5 at a time```")
                     return
                 }
             }
             
             if(splitD[0] == parts[1]){
-                s.ChannelMessageSend(channel.ID, "```Whoa there buddy, only 5 at a time```")
+                s.ChannelMessageSend(channel.ID, "```Invalid entry, try 'd20' or 'd6'```")
                 return
             }
 
