@@ -588,8 +588,8 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
                 }
             }
             
-            if splitD[1] == "" {
-                s.ChannelMessageSend(channel.ID, "```Invalid entry, try 'd20' or 'd6'```")
+            if(splitD[0] == parts[1]){
+                s.ChannelMessageSend(channel.ID, "```Whoa there buddy, only 5 at a time```")
                 return
             }
 
