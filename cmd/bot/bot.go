@@ -9,6 +9,7 @@
 package main
 
 import (
+        "bytes"
         "encoding/binary"
         "flag"
         "fmt"
@@ -22,6 +23,7 @@ import (
         "time"
         "runtime"
         "regexp"
+        "text/tabwriter"
         
         log "github.com/Sirupsen/logrus"
         "github.com/bwmarrin/discordgo"
@@ -44,7 +46,7 @@ var (
      OWNER string
      
      //Version
-     VERSION_RELEASE = "0.0.2"
+     VERSION_RELEASE = "0.0.3-b"
      
      //TIME Constant
      t0 = time.Now()
@@ -509,9 +511,21 @@ func handleBotControlMessages(s *discordgo.Session, m *discordgo.MessageCreate, 
         minutesPassed := d.Minutes()
         var truncate int = int(minutesPassed) % 60
         var hoursPassed int = int(minutesPassed / 60)
-        s.ChannelMessageSend(m.ChannelID,
-                             fmt.Sprintf("```info\nGoLang Ver.: %v\nmaymay-bot ver.: %v\nMem: %v / %v\nTime Up: %v hrs. %v min.\nCalls: %v```",
-                                         runtime.Version(), VERSION_RELEASE, mem.Alloc, mem.TotalAlloc, hoursPassed, truncate, COUNT))
+        w := &tabwriter.Writer{}
+        buf := &bytes.Buffer{}
+        
+        w.Init(buf, 0, 4, 0, ' ', 0)
+        fmt.Fprintf(w, "```\n")
+        fmt.Fprintf(w, "Discordgo: \t%s\n", discordgo.VERSION)
+        fmt.Fprintf(w, "Go: \t%s\n", runtime.Version())
+        fmt.Fprintf(w, "maymay-bot ver.: \t%s\n", VERSION_RELEASE)
+        fmt.Fprintf(w, "Time Up: \t%v hrs. %v min.\n", hoursPassed, truncate)
+        fmt.Fprintf(w, "Memory: \t%d / %d (%d total)\n", mem.Alloc, mem.Sys, mem.TotalAlloc)
+        fmt.Fprintf(w, "Calls: \t%d\n", COUNT)
+        fmt.Fprintf(w, "Servers: \t%d\n", len(discord.State.Ready.Guilds))
+        fmt.Fprintf(w, "```\n")
+        w.Flush()
+        s.ChannelMessageSend(m.ChannelID, buf.String())
     } else if scontains(parts[len(parts)-1], "where") && ourShard {
         s.ChannelMessageSend(m.ChannelID,
                              fmt.Sprintf("its a me, shard %v", string(g.ID[len(g.ID)-5])))
