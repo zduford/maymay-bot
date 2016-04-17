@@ -199,6 +199,85 @@ Sounds: []*Sound{
 },
 }
 
+var RUBY *SoundCollection = &SoundCollection{
+Prefix: "ruby",
+Commands: []string{
+    "!ruby",
+    "!rubymadness",
+},
+Sounds: []*Sound{
+    createSound("classic", 100, 250),
+    createSound("classic2", 100, 250),
+    createSound("cheeky", 100, 250),
+    createSound("scream", 100, 250),
+    createSound("scream2", 100, 250),
+    createSound("longscream", 100, 250),
+},
+}
+
+var DEDODATED *SoundCollection = &SoundCollection{
+Prefix: "dedodated",
+Commands: []string{
+    "!wam",
+    "!dedodatedwam",
+    "!dedodated",
+},
+Sounds: []*Sound{
+    createSound("classic", 10, 250),
+},
+}
+
+var CLIPVIOLIN *SoundCollection = &SoundCollection{
+Prefix: "clipviolin",
+Commands: []string{
+    "!clipviolin",
+},
+Sounds: []*Sound{
+    createSound("classic", 10, 250),
+},
+}
+
+var TROMBONE *SoundCollection = &SoundCollection{
+Prefix: "trombone",
+Commands: []string{
+    "!trombone",
+},
+Sounds: []*Sound{
+    createSound("classic", 10, 250),
+},
+}
+
+var VIOLIN *SoundCollection = &SoundCollection{
+Prefix: "violin",
+Commands: []string{
+    "!violin",
+},
+Sounds: []*Sound{
+    createSound("classic", 10, 250),
+},
+}
+
+var WEED *SoundCollection = &SoundCollection{
+Prefix: "weed",
+Commands: []string{
+    "!weed",
+    "!snoop",
+},
+Sounds: []*Sound{
+    createSound("classic", 10, 250),
+},
+}
+
+var LYIN *SoundCollection = &SoundCollection{
+Prefix: "lyin",
+Commands: []string{
+    "!lyin",
+},
+Sounds: []*Sound{
+    createSound("classic", 10, 250),
+},
+}
+
 var COLLECTIONS []*SoundCollection = []*SoundCollection{
     DAMN,
     DEEZNUTZ,
@@ -209,6 +288,13 @@ var COLLECTIONS []*SoundCollection = []*SoundCollection{
     TRIPLE,
     ILLKILLYOU,
     YOUDIP,
+    RUBY,
+    DEDODATED,
+    CLIPVIOLIN,
+    TROMBONE,
+    VIOLIN,
+    WEED,
+    LYIN,
 }
 
 // Create a Sound struct
@@ -540,7 +626,7 @@ func generateCommandList() string{
     var commands string
     commands = "`Here's some of those dank sounds you meme loving fuck \n\n"
     commands = commands + "!damn\n!deez\n!hitmarker\n!mmmsay\n!scream\n!wow\n!triple\n!illkillyou\n"
-    commands = commands + "!dip\n!roll\n\n"
+    commands = commands + "!dip\n!ruby\n!dedodated\n!trombone\n!violin\n!weed\n!lyin\n!roll\n\n"
     commands = commands + "Now go out there and make me proud you autists.`"
     return commands
 }
