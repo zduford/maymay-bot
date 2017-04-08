@@ -516,7 +516,7 @@ func playSound(play *Play, vc *discordgo.VoiceConnection) (err error) {
 
 func onReady(s *discordgo.Session, event *discordgo.Ready) {
 	log.Info("Recieved READY payload")
-	s.UpdateStatus(0, "Buko No Pico")
+	s.UpdateStatus(0, "Boku No Pico")
 }
 
 func onGuildCreate(s *discordgo.Session, event *discordgo.GuildCreate) {
@@ -553,7 +553,7 @@ func displayBotStats(cid string) {
 	for _, guild := range discord.State.Ready.Guilds {
 		users += len(guild.Members)
 	}
-
+	runtime.ReadMemStats(&mem)
 	t1 := time.Now()
 	d := t1.Sub(t0)
 	minutesPassed := d.Minutes()
@@ -790,6 +790,16 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	}
 
+	if parts[0] == "!killbot" && m.Author.ID == OWNER {
+		s.ChannelMessageSend(channel.ID, ":thinkering: goodbye fam :thinkering:")
+		os.Exit(0)
+	}
+
+	if parts[0] == "!stats" && m.Author.ID == OWNER {
+		COUNT++
+		displayBotStats(channel.ID)
+	}
+
 	// Find the collection for the command we got
 	for _, coll := range COLLECTIONS {
 		if scontains(parts[0], coll.Commands...) {
@@ -807,7 +817,7 @@ func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 					return
 				}
 			}
-
+			COUNT++
 			go enqueuePlay(m.Author, guild, coll, sound)
 			return
 		}
