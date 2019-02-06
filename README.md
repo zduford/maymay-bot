@@ -2,7 +2,7 @@
 maymay-bot is an implementation of the [Discord API](https://discordapp.com/developers/docs/intro). maymay-bot utilizes the [discordgo](https://github.com/bwmarrin/discordgo) library, a free and open source library. maymay-bot requires Go 1.4 or higher.
 
 ## Usage
-maymay-bot is used to spam terrible sound bytes cause i'm garbo.
+maymay-bot is used to spam terrible sound bytes cause i'm garbo.  On top of having many extra sound clips to play, it also can be used as a dice roller of *n* dice for *n*n sides. (i.e, !roll 5d6)
 
 ### Running the Bot
 First *get* the bot: `go get github.com/zduford/maymay-bot`
